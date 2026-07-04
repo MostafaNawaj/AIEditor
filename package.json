@@ -1,0 +1,93 @@
+{
+  "name": "aieditor",
+  "version": "0.1.1",
+  "description": "AI-powered code editor built with Electron, React, and Monaco",
+  "main": "electron.js",
+  "type": "module",
+  "author": "AIEditor",
+  "scripts": {
+    "dev": "concurrently -k \"vite\" \"wait-on http://localhost:5173 && cross-env ELECTRON_DEV=1 electron .\"",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "npm run build && electron .",
+    "test": "node --test tests/*.test.js",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "node scripts/generate-icon.js && npm run build && electron-builder --win"
+  },
+  "keywords": [
+    "electron",
+    "monaco",
+    "ai",
+    "editor"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@monaco-editor/react": "^4.7.0",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/addon-web-links": "^0.11.0",
+    "dotenv": "^16.4.7",
+    "monaco-editor": "^0.52.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "simple-git": "^3.27.0",
+    "xterm": "^5.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "electron": "^43.0.0",
+    "electron-builder": "^26.15.3",
+    "node-pty": "^1.0.0",
+    "png-to-ico": "^2.1.8",
+    "sharp": "^0.35.2",
+    "vite": "^6.0.7",
+    "wait-on": "^8.0.2"
+  },
+  "build": {
+    "appId": "com.aieditor.app",
+    "productName": "AIEditor",
+    "copyright": "Copyright © 2026 AIEditor",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron.js",
+      "dist/**/*",
+      "src/main/**/*",
+      "src/services/**/*",
+      "src/runtime/**/*",
+      "src/db/**/*",
+      "src/utils/**/*",
+      ".env.example",
+      "!**/*.map",
+      "!tests/**/*"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AIEditor",
+      "deleteAppDataOnUninstall": false,
+      "runAfterFinish": true
+    }
+  }
+}
